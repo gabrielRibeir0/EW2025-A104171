@@ -6,7 +6,15 @@ http.createServer((req, res) => {
     console.log("URL:" + req.url)
 
     if(req.method === "GET"){
-        if(req.url === "/cidades"){
+        if (req.url === "/"){
+            res.writeHead(200, {'Content-Type' : 'text/html;charset=utf-8'})
+            res.write("<h1>Mapa Virtual</h1>")
+            res.write("<ul>")
+            res.write("<li><a href='/cidades'>Lista de Cidades</a></li>")
+            res.write("</ul>")
+            res.end()
+        }
+        else if(req.url === "/cidades"){
             axios.get('http://localhost:3000/cidades?_sort=nome')
                 .then(resp => {
                     var cidades = resp.data
