@@ -5,6 +5,7 @@ data = json.load(open('dataset_reparacoes.json', 'r', encoding='utf-8'))
 reparacoes = data['reparacoes']
 viaturas = []
 intervencoes = []
+codigos_intervencoes = set()
 for reparacao in reparacoes:
     temp_intervencoes = reparacao['intervencoes']
     viaturas.append(reparacao['viatura'])
@@ -12,7 +13,9 @@ for reparacao in reparacoes:
     reparacao['intervencoes'] = []
     for intervencao in temp_intervencoes:
         reparacao['intervencoes'].append(intervencao['codigo'])
-        intervencoes.append(intervencao)
+        if intervencao['codigo'] not in codigos_intervencoes:
+            codigos_intervencoes.add(intervencao['codigo'])
+            intervencoes.append(intervencao)
 
 normalized_data = {
     'reparacoes': reparacoes,
