@@ -19,12 +19,12 @@ http.createServer((req, res) => {
         else if(req.url === "/reparacoes"){
             axios.get('http://localhost:3000/reparacoes?_sort=nome')
                 .then(resp => {
-                    var cidades = resp.data
+                    var reparacoes = resp.data
                     res.writeHead(200, {'Content-Type' : 'text/html;charset=utf-8'})
                     res.write("<h1>Reparações</h1>")
                     res.write("<ul>")
-                    cidades.forEach(r => {
-                        res.write(`<li><a href='/reparacoes?nif=${r.nif}'>${r.nome}</a></li>`)
+                    reparacoes.forEach(r => {
+                        res.write(`<li><a href='/reparacoes/${r.nif}'>${r.nome} (NIF:${r.nif})</a></li>`)
                     });
                     res.write("</ul>")
                     res.end()
@@ -35,8 +35,8 @@ http.createServer((req, res) => {
                     res.end()
                 })    
         } 
-        else if (req.url.match(/\/reparacoes\?nif=\d+/)){
-            var nif = req.url.split("=")[1]
+        else if (req.url.match(/\/reparacoes\/.+/)){
+            var nif = req.url.split("/")[2]
             console.log(nif)
             axios.get(`http://localhost:3000/reparacoes?nif=${nif}`)
                 .then(resp => {
@@ -48,8 +48,7 @@ http.createServer((req, res) => {
                     else{
                         var reparacao = resp.data[0]
                     }
-                    console.log("COISO")
-                    console.log(reparacao)
+
                     res.writeHead(200, {'Content-Type' : 'text/html;charset=utf-8'})
                     res.write("<p><b>Nome:</b> " + reparacao.nome + "</p>")
                     res.write("<p><b>Nif:</b> " + reparacao.nif + "</p>")
@@ -59,7 +58,7 @@ http.createServer((req, res) => {
                     res.write("<p><b>Intervencoes:</b></p>")
                     res.write("<ul>")
                     reparacao.intervencoes.forEach(i => {
-                        res.write(`<li><a href='/intervencoes?nome=${i}'>${i}</a></li>`)
+                        res.write(`<li><a href='/intervencoes/${i}'>${i}</a></li>`)
                     });
                     res.write("</ul>")
                     res.write("<h6><a href='/reparacoes'>Voltar</a></h6>")
@@ -76,8 +75,72 @@ http.createServer((req, res) => {
             res.end()
         }
         else if (req.url === "/intervencoes"){
-            res.writeHead(501, {'Content-Type' : 'text/html;charset=utf-8'})
-            res.end()
+            axios.get('http://localhost:3000/intervencoes?_sort=codigo')
+                .then(resp => {
+                    var intervencoes = resp.data
+                    res.writeHead(200, {'Content-Type' : 'text/html;charset=utf-8'})
+                    res.write("<h1>Intervenções</h1>")
+                    res.write("<ul>")
+                    intervencoes.forEach(i => {
+                        res.write(`<li><a href='/intervencoes/${i.codigo}'>${i.codigo}</a></li>`)
+                    });
+                    res.write("</ul>")
+                    res.end()
+                })
+                .catch(err => {
+                    res.writeHead(500, {'Content-Type' : 'text/html;charset=utf-8'})
+                    console.log(err)
+                    res.end()
+                })
+        }
+        else if (req.url.match(/\/intervencoes\/.+/)){
+            var codigo = req.url.split("/")[2]
+            console.log(codigo)
+            axios.get(`http://localhost:3000/intervencoes?codigo=${codigo}`)
+                .then(resp => {
+                    if(resp.data.length == 0){
+                        res.writeHead(404, {'Content-Type' : 'text/html;charset=utf-8'})
+                        res.end()
+                        return;
+                    }
+                    else{
+                        var intervencao = resp.data[0]
+                    }
+                    axios.get(`http://localhost:3000/reparacoes?q=${codigo}`)
+                        .then(resp2 => {
+                            if(resp2.data.length == 0){
+                                var reparacoes = []
+                            }
+                            else{
+                                var reparacoes = resp2.data
+                            }
+                            console.log(reparacoes)
+                            res.writeHead(200, {'Content-Type' : 'text/html;charset=utf-8'})
+                            res.write(`<h1>Intervenção ${codigo}</h1>`)
+                            res.write("<ul>")
+                            res.write(`<li><b>Código:</b> ${intervencao.codigo}</li>`)
+                            res.write(`<li><b>Nome:</b> ${intervencao.nome}</li>`)
+                            res.write(`<li><b>Descrição:</b> ${intervencao.descricao}</li>`)
+                            res.write(`<li><b>Reparações em que está presente:</b>`)
+                            res.write("<ul>")
+                            reparacoes.forEach(r => {
+                                res.write(`<li><a href='/reparacoes/${r.nif}'>${r.nome} (NIF:${r.nif})</a></li>`)
+                            });
+                            res.write("</ul></li></ul>")
+                            res.write("<h6><a href='/'>Voltar ao início</a></h6>")
+                            res.end()
+                        })
+                        .catch(err => {
+                            res.writeHead(500, {'Content-Type' : 'text/html;charset=utf-8'})
+                            console.log(err)
+                            res.end()
+                        })
+                })
+                .catch(err => {
+                    res.writeHead(500, {'Content-Type' : 'text/html;charset=utf-8'})
+                    console.log(err)
+                    res.end()
+                })
         }
         else{
             res.writeHead(404, {'Content-Type' : 'text/html;charset=utf-8'})
