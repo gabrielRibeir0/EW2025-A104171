@@ -71,6 +71,6 @@ A página da intervenção apresenta a informação relativa a esta:
 - Dataset original das reparações: [dataset_reparacoes.json](https://github.com/gabrielRibeir0/EW2025-A104171/blob/main/TPC1/dataset_reparacoes.json)
 - Dataset resultante após normalização: [reparacoes_normalized.json](https://github.com/gabrielRibeir0/EW2025-A104171/blob/main/TPC1/reparacoes_normalized.json)
 - Script em *python* para normalizar o dataset original: [normalizer.py](https://github.com/gabrielRibeir0/EW2025-A104171/blob/main/TPC1/normalizer.py)
-- Servidor prestador do serviço em *nodejs*: [server-js](https://github.com/gabrielRibeir0/EW2025-A104171/blob/main/TPC1/server.js)
+- Servidor prestador do serviço em *nodejs*: [server.js](https://github.com/gabrielRibeir0/EW2025-A104171/blob/main/TPC1/server.js)
 
 Assim, o servidor apresenta um conjunto de páginas Web que apresentam a informação do dataset de forma organizada e navegável entre si.
