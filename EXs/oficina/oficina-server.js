@@ -12,7 +12,7 @@ createServer(function (req, res) {
         res.write(genMainPage(d))
         res.end()  
     }
-    else if(req.url.match(/.+w3\.css$/)){
+    else if(req.url.match(/w3\.css$/)){
         readFile("w3.css", function(erro, dados){
             if(erro){
                 res.writeHead(404, {'Content-Type': 'text/html; charset=utf-8'})
