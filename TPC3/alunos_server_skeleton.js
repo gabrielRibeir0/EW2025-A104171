@@ -19,7 +19,6 @@ function collectRequestBodyData(request, callback) {
     }
 }
 
-
 var alunosServer = http.createServer((req, res) => {
     // Logger: what was requested and when it was requested
     var d = new Date().toISOString().substring(0, 16)
@@ -32,14 +31,35 @@ var alunosServer = http.createServer((req, res) => {
     else{
         switch(req.method){
             case "GET": 
-                // GET /alunos --------------------------------------------------------------------
+                // GET / or /alunos --------------------------------------------------------------------
                 if(req.url == '/' || req.url == 'alunos'){
-                    res.writeHead(405, {'Content-Type': 'text/html; charset=utf-8'})
-
+                    axios.get('http://localhost:3000/alunos')
+                        .then(resp => {
+                            res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'})
+                            res.write(templates.studentsListPage(resp.data, d))
+                            res.end()
+                        })
+                        .catch(erro => {
+                            console.log(erro)
+                            res.writeHead(500, {'Content-Type': 'text/html; charset=utf-8'})
+                            res.end(templates.errorPage(erro, d))
+                        })
                 }
                 // GET /alunos/:id --------------------------------------------------------------------
                 else if(req.url.match(/\alunos\/[A|PG]\d+$/)){
-                    res.writeHead(405, {'Content-Type': 'text/html; charset=utf-8'})
+                    id = req.url.split("/")[2]
+                    axios.get('http://localhost:3000/alunos/' + id)
+                        .then(resp => {
+                            aluno = resp.data
+                            res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'})
+                            res.write(templates.studentPage(aluno,d))
+                            res.end()
+                        })
+                        .catch(erro => {
+                            console.log(erro)
+                            res.writeHead(500, {'Content-Type': 'text/html; charset=utf-8'})
+                            res.end(templates.errorPage(erro, d))
+                        })
                 }
                 // GET /alunos/registo --------------------------------------------------------------------
                 else if(req.url == '/alunos/registo'){
@@ -47,7 +67,8 @@ var alunosServer = http.createServer((req, res) => {
                     res.write(templates.studentFormPage(d))
                     res.end()
                 }
-                else if(req.url.match(/\alunos\/edit\/[A|PG]\d+$/)){
+                // GET /alunos/edit/:id --------------------------------------------------------------------
+                else if(req.url.match(/\/alunos\/edit\/[A|PG]\d+$/)){
                     id = req.url.split("/")[3]
                     axios.get('http://localhost:3000/alunos/' + id)
                         .then(resp => {
@@ -59,61 +80,49 @@ var alunosServer = http.createServer((req, res) => {
                         .catch(erro => {
                             console.log(erro)
                             res.writeHead(500, {'Content-Type': 'text/html; charset=utf-8'})
-                            res.write("<p>Erro: " + erro + "</p>")
+                            res.write(templates.errorPage(erro, d))
                             res.end()
                         })
-
-                    res.writeHead(405, {'Content-Type': 'text/html; charset=utf-8'})
-
                 }
-                else if(req.url.match(/\alunos\/delete\/[A|PG]\d+$/)){
-                    res.writeHead(405, {'Content-Type': 'text/html; charset=utf-8'})
-                }
+                // GET ? -> Lancar um erro
                 else{
                     res.writeHead(404, {'Content-Type': 'text/html; charset=utf-8'})
+                    res.write(templates.errorPage("Resource not found: " + req.url, d))
                     res.end()
                 }
-
-                // GET /alunos/:id --------------------------------------------------------------------
-                
-                // GET /alunos/registo --------------------------------------------------------------------
-               
-                // GET /alunos/edit/:id --------------------------------------------------------------------
-               
-                // GET /alunos/delete/:id --------------------------------------------------------------------
-                
-                // GET ? -> Lancar um erro
                 break
             case "POST":
                 // POST /alunos/registo --------------------------------------------------------------------
                 if(req.url === '/alunos/registo'){
                     collectRequestBodyData(req, result => {
-                       if(result){
+                       if (result) {
                             axios.post('http://localhost:3000/alunos', result)
                                 .then(resp => {
                                     res.writeHead(201, {'Content-Type': 'text/html; charset=utf-8'})
-                                    res.write(`<p>Registo Inserido: ${JSON.stringify(resp.data)}</p>`)
+                                    res.write(templates.confirmationPage(`Registo Inserido: ${JSON.stringify(resp.data)}`))
                                     res.end()
                                 })
                                 .catch(erro => {
                                     console.log(erro)
                                     res.writeHead(500, {'Content-Type': 'text/html; charset=utf-8'})
-                                    res.write("<p>Erro: " + erro + "</p>")
+                                    res.write(templates.errorPage(erro, d))
                                     res.end()
                                 })
-                       }else{ //em caso de nao ter resultado
-                            console.log(erro)
+                        } else { //em caso de nao ter resultado
                             res.writeHead(500, {'Content-Type': 'text/html; charset=utf-8'})
+                            res.write(templates.errorPage("Error collecting form data", d))
                             res.end()
-                       }
+                        }
                     })
-                } else if(req.url.match(/\alunos\/edit\/[A|PG]\d+$/)){
+                } 
+                // POST /alunos/edit/:id --------------------------------------------------------------------
+                else if (req.url.match(/\/alunos\/edit\/[A|PG]\d+$/)) {
                     collectRequestBodyData(req, result => {
-                        if(result){
+                        if (result) {
                             axios.put('http://localhost:3000/alunos/' + result.id, result)
                                 .then(resp => {
                                     res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'})
-                                    res.write(`<p>Registo Atualizado: ${JSON.stringify(resp.data)}</p>`)
+                                    res.write(templates.confirmationPage(`Registo Atualizado: ${JSON.stringify(resp.data)}`))
                                     res.end()
                                 })
                                 .catch(erro => {
@@ -129,68 +138,69 @@ var alunosServer = http.createServer((req, res) => {
                         }
                     })
                 } 
-                else if(req.url.match(/\alunos\/delete\/[A|PG]\d+$/)){
+                // POST /alunos/delete/:id --------------------------------------------------------------------
+                else if (req.url.match(/\/alunos\/delete\/[A|PG]\d+$/)) {
                     id = req.url.split("/")[3]
                     axios.delete('http://localhost:3000/alunos/' + id)
                                 .then(resp => {
                                     res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'})
-                                    res.write(`<p>Registo Eliminado</p>`)
+                                    res.write(templates.confirmationPage(`Registo Eliminado`))
                                     res.end()
                                 })
                                 .catch(error => {
                                     console.log(erro)
                                     res.writeHead(500, {'Content-Type': 'text/html; charset=utf-8'})
-                                    res.write("<p>Erro: " + error + "</p>")
+                                    res.write(templates.errorPage(erro, d))
                                     res.end()
                                 })
-                }else{
-                    res.writeHead(500, {'Content-Type': 'text/html; charset=utf-8'})
+                }
+                // POST ? -> Lancar um erro
+                else {
+                    res.writeHead(404, {'Content-Type': 'text/html; charset=utf-8'})
+                    res.write(templates.errorPage("Resource not found: " + req.url, d))
                     res.end()
                 }
-                break;
+                break
                 
-                // POST /alunos/edit/:id --------------------------------------------------------------------
-
-                // POST ? -> Lancar um erro
             case "PUT":
-                if(req.url.match(/\alunos\/edit\/[A|PG]\d+$/)){
+                if(req.url.match(/\/alunos\/edit\/[A|PG]\d+$/)){
                     collectRequestBodyData(req, result => {
-                        if(result){
+                        if (result) {
                             axios.put('http://localhost:3000/alunos/' + result.id, result)
                                 .then(resp => {
                                     res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'})
-                                    res.write(`<p>Registo Atualizado: ${JSON.stringify(resp.data)}</p>`)
+                                    res.write(templates.confirmationPage(`Registo Atualizado: ${JSON.stringify(resp.data)}`))
                                     res.end()
                                 })
                                 .catch(error => {
                                     console.log(erro)
                                     res.writeHead(500, {'Content-Type': 'text/html; charset=utf-8'})
-                                    res.write("<p>Erro: " + error + "</p>")
+                                    res.write(templates.errorPage("Error collecting form data", d))
                                     res.end()
                                 })
-                        }else{ //em caso de nao ter resultado
+                        } else { //em caso de nao ter resultado
                             console.log(erro)
                             res.writeHead(500, {'Content-Type': 'text/html; charset=utf-8'})
                             res.end()
                         }
                     })
-                }else{
+                } else {
                     res.writeHead(404, {'Content-Type': 'text/html; charset=utf-8'})
+                    res.write(templates.errorPage("Resource not found: " + req.url, d))
                     res.end()
                 }
-            case "DELETE":
+                break
             default: 
                 // Outros metodos nao sao suportados
                 res.writeHead(500, {'Content-Type': 'text/html; charset=utf-8'})
-                res.write("<p>Erro: Metodo nao suportado</p>")
+                res.write(templates.errorPage("Method not supported: " + req.method, d))
                 res.end()
         }
     }
 })
 
 alunosServer.listen(7777, ()=>{
-    console.log("Servidor à escuta na porta 7777...")
+    console.log("Servidor à escuta em http://localhost:7777...")
 })
-
 
 

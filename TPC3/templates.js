@@ -34,9 +34,12 @@ exports.studentsListPage = function(slist, d){
                             ${slist[i].nome}
                         </a>
                     </td>
-                    <td>${slist[i].gitlink}</td>
+                    <td><a href="${slist[i].gitlink}">${slist[i].gitlink}</a></td>
                     <td>
-                        [<a href="/alunos/edit/${slist[i].id}">Edit</a>][<a href="/alunos/delete/${slist[i].id}">Delete</a>]
+                        <a class="w3-btn w3-round w3-blue" href="/alunos/edit/${slist[i].id}">Edit</a>
+                        <form method="POST" action="/alunos/delete/${slist[i].id}" style="display:inline">
+                            <button type="submit" class="w3-btn w3-round w3-red">Delete</button>
+                        </form>
                     </td>
                 </tr>
         `
@@ -220,6 +223,25 @@ exports.studentPage = function( aluno, d ){
     </html>
     `
     return pagHTML
+}
+
+exports.confirmationPage = function(confirmationText){
+    return `
+    <html>
+        <head>
+            <title>Confirmation Page</title>
+            <meta charset="utf-8"/>
+            <link rel="icon" href="favicon.png"/>
+            <link rel="stylesheet" href="w3.css">
+        </head>
+        <body>
+            <div class="w3-container w3-center w3-padding-64">
+                <h2 class="w3-text-green">${confirmationText}</h2>
+                <p><a href="/" class="w3-btn w3-green w3-round">Voltar à lista</a></p>
+            </div>
+        </body>
+    </html>
+    `
 }
 
 // -------------- Error Treatment ------------------------------
