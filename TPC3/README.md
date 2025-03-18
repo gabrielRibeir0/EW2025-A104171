@@ -11,6 +11,4 @@
 
 ## Descrição Trabalho
 
-No TPC3
-
-## Resultados
+No TPC3 a tarefa consiste em construir um servidor que suporte operações CRUD sobre um dataset de alunos.
