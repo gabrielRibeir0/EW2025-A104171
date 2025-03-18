@@ -1,19 +1,6 @@
 {
   "alunos": [
     {
-      "id": "A100893",
-      "nome": "Luís de Castro Rodrigues Caetano",
-      "gitlink": "https://github.com/056zedelta/EngWeb2024.git"
-    },
-    {
-      "id": "A100701",
-      "nome": "Pedro Duarte Nobre Viana",
-      "gitlink": "https://github.com/dvianaa/EngWeb2024",
-      "tpc1": "1",
-      "tpc2": "1",
-      "tpc3": "1"
-    },
-    {
       "id": "A100758",
       "nome": "Hugo Arantes Dias",
       "gitlink": "https://github.com/hugodiasUM/EngWeb2024/tree/main"
@@ -52,12 +39,6 @@
       "id": "A97455",
       "nome": "Henrique Nuno Marinho Malheiro",
       "gitlink": "https://github.com/a97455/EngWeb2024"
-    },
-    {
-      "id": "A105777",
-      "nome": "Fernando",
-      "gitlink": "sic.pt",
-      "tpc6": "1"
     },
     {
       "id": "A999999",
