@@ -1,0 +1,44 @@
+extends layout
+
+block content
+    .w3-card-4
+        header.w3-container.w3-blue 
+            h1 Contrato #{contrato._id}
+        .w3-container
+            ul.w3-ul.w3-hoverable
+                li.w3-padding 
+                    b ID: 
+                    | #{contrato._id}
+                li.w3-padding 
+                    b Número Anúncio: 
+                    | #{contrato.nAnuncio}
+                li.w3-padding 
+                    b Tipo Procedimento: 
+                    | #{contrato.tipoprocedimento}
+                li.w3-padding 
+                    b Objeto: 
+                    | #{contrato.objectoContrato}
+                li.w3-padding 
+                    b Data Publicação: 
+                    | #{contrato.dataPublicacao}
+                li.w3-padding 
+                    b Data Celebração: 
+                    | #{contrato.dataCelebracaoContrato}
+                li.w3-padding 
+                    b Preço (€): 
+                    | #{contrato.precoContratual}
+                li.w3-padding 
+                    b Prazo Execução: 
+                    | #{contrato.prazoExecucao}
+                li.w3-padding 
+                    b NIPC Entidade: 
+                    | #{contrato.NIPC_entidade_comunicante}
+                li.w3-padding 
+                    b Nome Entidade: 
+                    | #{contrato.entidade_comunicante}
+                li.w3-padding 
+                    b Fundamentação: 
+                    | #{contrato.fundamentacao}
+        footer.w3.container.w3-blue 
+            adress
+                a(href='/') Voltar à Lista de Contratos
