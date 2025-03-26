@@ -5,40 +5,40 @@ block content
         header.w3-container.w3-blue 
             h1 Contrato #{contrato._id}
         .w3-container
-            ul.w3-ul.w3-hoverable
-                li.w3-padding 
+            ul.w3-ul
+                li
                     b ID: 
-                    | #{contrato._id}
-                li.w3-padding 
+                    span #{contrato._id}
+                li
                     b Número Anúncio: 
-                    | #{contrato.nAnuncio}
-                li.w3-padding 
+                    span #{contrato.nAnuncio}
+                li
                     b Tipo Procedimento: 
-                    | #{contrato.tipoprocedimento}
-                li.w3-padding 
+                    span #{contrato.tipoprocedimento}
+                li
                     b Objeto: 
-                    | #{contrato.objectoContrato}
-                li.w3-padding 
+                    span #{contrato.objectoContrato}
+                li
                     b Data Publicação: 
-                    | #{contrato.dataPublicacao}
-                li.w3-padding 
+                    span #{contrato.dataPublicacao}
+                li
                     b Data Celebração: 
-                    | #{contrato.dataCelebracaoContrato}
-                li.w3-padding 
+                    span #{contrato.dataCelebracaoContrato}
+                li
                     b Preço (€): 
-                    | #{contrato.precoContratual}
-                li.w3-padding 
+                    span #{contrato.precoContratual}
+                li
                     b Prazo Execução: 
-                    | #{contrato.prazoExecucao}
-                li.w3-padding 
+                    span #{contrato.prazoExecucao}
+                li
                     b NIPC Entidade: 
-                    | #{contrato.NIPC_entidade_comunicante}
-                li.w3-padding 
+                    span #{contrato.NIPC_entidade_comunicante}
+                li
                     b Nome Entidade: 
-                    | #{contrato.entidade_comunicante}
-                li.w3-padding 
+                    span #{contrato.entidade_comunicante}
+                li
                     b Fundamentação: 
-                    | #{contrato.fundamentacao}
-        footer.w3.container.w3-blue 
+                    span #{contrato.fundamentacao}
+        footer.w3.container.w3-padding.w3-blue 
             adress
                 a(href='/') Voltar à Lista de Contratos

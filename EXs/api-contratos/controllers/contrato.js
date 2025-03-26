@@ -1,7 +1,9 @@
 var Contrato = require('../models/contrato');
 
 module.exports.getContratos = () => {
-    return Contrato.find().exec();
+    return Contrato.find()
+            .sort({precoContratual  : -1}) // extra opcional ordenar por preço descrescente
+            .exec();
 }
 
 module.exports.getContratoById = (id) => {
