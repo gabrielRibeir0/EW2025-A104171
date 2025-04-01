@@ -1,9 +1,0 @@
-1. gerar projeto express
-2. implementar ligação db
-3. testar
-4. definir data models db
-5. testar
-7. definir controllers
-8. definir routes
-9. testar
-9. fazer o exercicio
