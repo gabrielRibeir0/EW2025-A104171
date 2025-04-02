@@ -19,6 +19,10 @@ module.exports.getBooksByGenre = (genre) => {
     return Book.find({genres: genre}).exec();
 }
 
+module.exports.getBooksByAuthor = (author) => {
+    return Book.find({author: author}).exec();
+}
+
 module.exports.getCharaters = () => {
     return Book
         .distinct("characters")
@@ -33,19 +37,18 @@ module.exports.getGenres = () => {
         .exec();
 }
 
-/*
-module.exports.insert = (contr) => {
-    var contrToSave = new Contrato(contr);
-    return contrToSave.save();
+
+module.exports.insert = (book) => {
+    var bookToSave = new Book(book);
+    return bookToSave.save();
 }
 
-module.exports.update = (contr, id) => {
+module.exports.update = (book, id) => {
     //por default dá return ao objeto antes de ser atualizado
     //com {new: true} dá return ao objeto atual
-    return Contrato.findByIdAndUpdate(id, contr, {new: true}).exec();
+    return Book.findByIdAndUpdate(id, book, {new: true}).exec();
 }
 
 module.exports.delete = (id) => {
-    return Contrato.findByIdAndDelete(id, {new: true}).exec();
+    return Book.findByIdAndDelete(id, {new: true}).exec();
 }
-*/

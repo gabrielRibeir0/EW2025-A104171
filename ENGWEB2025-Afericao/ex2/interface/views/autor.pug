@@ -12,6 +12,17 @@ block content
           i.fa.fa-book.w3-margin-right
           | Catálogo de Livros
         
+        a.w3-button.w3-teal.w3-round-large.w3-margin-bottom(href='/')
+          i.fa.fa-arrow-left.w3-margin-right
+          | Voltar à Página Principal
+
+        .w3-container.w3-margin-top
+          .w3-panel.w3-pale-blue.w3-leftbar.w3-border-blue
+            h4 Estatísticas
+            p
+              strong Total de Livros: 
+              span.w3-large #{livros.length}
+        
         .w3-responsive
           table.w3-table-all.w3-hoverable.w3-card-4
             thead
@@ -25,13 +36,16 @@ block content
               each livro in livros
                 tr
                   td
-                    a.w3-text-blue(href='/' + livro._id) #{livro._id}
+                    a.w3-text-blue(href='/livros/' + livro._id) #{livro._id}
                   td= livro.title
                   td
-                    ul
-                      each autor in livro.author
-                        li 
-                          a.w3-text-blue(href='/autores/' + autor) #{autor}
+                    if Array.isArray(livro.author)
+                      each autor, index in livro.author
+                        if index > 0
+                          | , 
+                        a.w3-text-blue(href='/autores/' + autor) #{autor}
+                    else
+                      a.w3-text-blue(href='/autores/' + livro.author) #{livro.author}
                   td= livro.publishDate
                   td= livro.pages
     
