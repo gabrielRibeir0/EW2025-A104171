@@ -1,0 +1,178 @@
+extends layout
+
+block content
+  .w3-container
+    header.w3-container.w3-teal.w3-padding-16
+      h1.w3-xxlarge Detalhes do Livro
+      
+    main.w3-container.w3-margin-top.w3-margin-bottom
+      .w3-panel.w3-white.w3-card-4.w3-padding-16
+        
+        // Link para voltar à página principal
+        a.w3-button.w3-teal.w3-round-large.w3-margin-bottom(href='/')
+          i.fa.fa-arrow-left.w3-margin-right
+          | Voltar à Página Principal
+        
+        .w3-row
+          // Imagem da capa (se existir)
+          if livro.coverImg
+            .w3-col.l3.m4.s12.w3-padding
+              img.w3-image.w3-round.w3-card-2(src=livro.coverImg, alt='Capa do livro ' + livro.title, style='width:100%;max-width:300px')
+              
+              // Bloco de avaliação
+              .w3-container.w3-center.w3-margin-top
+                .w3-border.w3-round-large.w3-padding
+                  h4 Avaliação
+                  .w3-large
+                    - var stars = Math.round(livro.rating)
+                    - for (var i = 0; i < 5; i++)
+                      if i < stars
+                        i.fa.fa-star.w3-text-amber
+                      else
+                        i.fa.fa-star-o.w3-text-amber
+                  p.w3-large.w3-text-teal #{livro.rating} / 5
+                  if livro.numRatings
+                    p (#{livro.numRatings} avaliações)
+                  if livro.likedPercent
+                    p #{livro.likedPercent}% gostaram
+          
+          // Informações do livro
+          .w3-col.l9.m8.s12.w3-padding
+            h2.w3-text-teal #{livro.title}
+            
+            // Informações principais
+            table.w3-table.w3-bordered
+              tr
+                th.w3-text-teal(style='width:150px') ID:
+                td #{livro._id}
+              
+              if livro.series
+                tr
+                  th.w3-text-teal Série:
+                  td #{livro.series}
+              
+              tr
+                th.w3-text-teal Autor(es):
+                td 
+                  if Array.isArray(livro.author)
+                    each autor, index in livro.author
+                      if index > 0
+                        | , 
+                      a.w3-text-blue(href='/autores/' + autor) #{autor}
+                  else
+                    | #{livro.author}
+              
+              if livro.publishDate
+                tr
+                  th.w3-text-teal Data de Publicação:
+                  td #{livro.publishDate}
+              
+              if livro.firstPublishDate
+                tr
+                  th.w3-text-teal Primeira Edição:
+                  td #{livro.firstPublishDate}
+              
+              if livro.pages
+                tr
+                  th.w3-text-teal Páginas:
+                  td #{livro.pages}
+              
+              if livro.publisher
+                tr
+                  th.w3-text-teal Editora:
+                  td #{livro.publisher}
+              
+              if livro.language
+                tr
+                  th.w3-text-teal Idioma:
+                  td #{livro.language}
+              
+              if livro.isbn
+                tr
+                  th.w3-text-teal ISBN:
+                  td #{livro.isbn}
+              
+              if livro.price
+                tr
+                  th.w3-text-teal Preço:
+                  td €#{livro.price.toFixed(2)}
+              
+              if livro.edition
+                tr
+                  th.w3-text-teal Edição:
+                  td #{livro.edition}
+              
+              if livro.bookFormats
+                tr
+                  th.w3-text-teal Formatos:
+                  td #{livro.bookFormats}
+            
+            // Descrição se existir
+            if livro.description
+              .w3-panel.w3-pale-yellow.w3-leftbar.w3-border-yellow
+                h4 Descrição
+                p #{livro.description}
+            
+            // Gêneros se existirem
+            if livro.genres && livro.genres.length > 0
+              .w3-section
+                h4.w3-text-teal Gêneros
+                .w3-container
+                  each genero in livro.genres
+                    span.w3-tag.w3-teal.w3-round.w3-margin-right #{genero}
+            
+            // Personagens se existirem  
+            if livro.characters && livro.characters.length > 0
+              .w3-section
+                h4.w3-text-teal Personagens
+                .w3-container
+                  each personagem in livro.characters
+                    span.w3-tag.w3-blue.w3-round.w3-margin-right #{personagem}
+            
+            // Cenários se existirem
+            if livro.setting && livro.setting.length > 0
+              .w3-section
+                h4.w3-text-teal Cenários
+                .w3-container
+                  each cenario in livro.setting
+                    span.w3-tag.w3-green.w3-round.w3-margin-right #{cenario}
+            
+            // Prêmios se existirem
+            if livro.awards && livro.awards.length > 0
+              .w3-section
+                h4.w3-text-teal Prêmios
+                ul.w3-ul.w3-card-4
+                  each premio in livro.awards
+                    li
+                      i.fa.fa-trophy.w3-text-amber.w3-margin-right
+                      | #{premio}
+            
+            // Estatísticas BBE se existirem
+            if livro.bbeScore || livro.bbeVotes
+              .w3-section
+                h4.w3-text-teal Pontuação BBE
+                .w3-container.w3-border.w3-round-large.w3-padding
+                  if livro.bbeScore
+                    p 
+                      strong Pontuação: 
+                      | #{livro.bbeScore}
+                  if livro.bbeVotes
+                    p 
+                      strong Votos: 
+                      | #{livro.bbeVotes}
+            
+            // Distribuição de avaliações se existir
+            if livro.ratingsByStars && livro.ratingsByStars.length > 0
+              .w3-section
+                h4.w3-text-teal Distribuição de Avaliações
+                table.w3-table.w3-bordered
+                  tr
+                    th Estrelas
+                    th Quantidade
+                  each quantidade, index in livro.ratingsByStars
+                    tr
+                      td #{5 - index} estrelas
+                      td #{quantidade}
+        
+    footer.w3-container.w3-teal.w3-center.w3-padding-16.w3-margin-top
+      p &copy; 2025 Sistema de Livros. Todos os direitos reservados.

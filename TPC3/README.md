@@ -11,11 +11,10 @@
 
 ## Descrição Trabalho
 
-No TPC3 a tarefa é completar um servidor semelhante aos TPC anteriores com as operações CRUD.
+No TPC3 a tarefa consiste em construir um servidor que suporte operações CRUD sobre um dataset de alunos.
 
 ## Resultados
 
-- Servidor []()
-- [static.js]()
-- [templates.js]()
-- Dataset [alunos.json]()
+- Servidor [alunos_server_skeleton.js](https://github.com/gabrielRibeir0/EW2025-A104171/blob/main/TPC3/alunos_server_skeleton.js)
+- Servidor de recursos estáticos [static.js](https://github.com/gabrielRibeir0/EW2025-A104171/blob/main/TPC3/static.js)
+- Fornecedor de templates [templates.js](https://github.com/gabrielRibeir0/EW2025-A104171/blob/main/TPC3/templates.js)
