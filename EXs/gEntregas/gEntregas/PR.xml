@@ -1,0 +1,15 @@
+<pr>
+    <metadata>
+        <id>111</id>
+        <uc>EW2025</uc>
+        <projeto>PROJ_EW_2025</projeto>
+        <titulo>Titulo de Teste</titulo>
+    </metadata>
+
+    <equipa>
+        <id>123</id>
+        <nome>FC Grisalhos</nome>
+    </equipa>
+
+    <obs>Observação de teste</obs>
+</pr>
