@@ -3,10 +3,19 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
 
 var app = express();
+
+var mongoDB = 'mongodb://localhost:27017/EW2025';
+mongoose.connect(mongoDB);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('open', function() {
+        console.log('Connected to MongoDB');
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

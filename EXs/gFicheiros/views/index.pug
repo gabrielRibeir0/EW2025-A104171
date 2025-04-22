@@ -6,9 +6,15 @@ block content
     header.w3-indigo
       h1 File Upload
     form.w3-container(action='/files' method='POST' enctype='multipart/form-data')
-      label.w3-text-teal
-        b Select file
-      input.w3-input.w3-border.w3-ligth-grey(type='file' name ='myFile')
+      input.w3-btn.w3-orange.w3-right(type='button' value='+' onClick='addFileForm()')
+      div(id='fields')
+        .w3-card-4.w3-input  
+          label.w3-text-teal
+            b Name
+          input.w3-input.w3-border.w3-ligth-grey(type='text' name ='name' required)
+          label.w3-text-teal
+            b Select file
+          input.w3-input.w3-border.w3-ligth-grey(type='file' name ='myFile' required)  
       input.w3-btn.w3-blue-grey(type='submit' value='Send')
     
   .w3-card-4

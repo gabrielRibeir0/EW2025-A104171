@@ -43,3 +43,16 @@ function showImage(name, type){
     // 3 - Mostrar a modal
     $('#display').modal()
 }
+
+function addFileForm(){
+    var html = `
+        <div class='w3-card-4 w3-input'>
+            <label class='w3-text-teal'><b>Name</b></label>
+            <input class='w3-input w3-border w3-light-grey' type='text' name='name' required>
+            <label class='w3-text-teal'><b>Select File</b></label>
+            <input class='w3-input w3-border w3-light-grey' type='file' name='myFile' required>
+        </div>
+    `
+
+    $('#fields').append(html)
+}
